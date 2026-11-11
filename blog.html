@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyDeck | Project plan and troubleshooting blog</title>
+  <meta name="description" content="The three-week sprint plan behind StudyDeck, and two real bugs found while building it, with the code that caused them and the code that fixed them.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="2" y="2" width="28" height="28" rx="7" fill="#1c5c4b"></rect>
+        <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="#e7a63c" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span>StudyDeck</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="tasks.html">Task manager</a>
+      <a href="blog.html" aria-current="page">Project blog</a>
+      <a href="ethics.html">Ethics &amp; privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <section class="page-head">
+      <h1>Project plan and troubleshooting blog</h1>
+      <p>
+        How StudyDeck was planned across a three-week sprint, what Agile ideas
+        were borrowed and why, and two bugs that actually broke the application
+        on the way, with the code that caused each one and the fix that closed it.
+      </p>
+    </section>
+
+    <!-- ===== Agile research and reasoning ===== -->
+    <section class="section" aria-labelledby="agileTitle">
+      <div class="section__head">
+        <h2 id="agileTitle">What Agile gave this project</h2>
+      </div>
+      <div class="prose">
+        <p>
+          Agile is a way of running software development in short, repeating
+          cycles instead of one long build that ends in a single delivery. The
+          Agile Manifesto (Flewelling, 2018, ch. 1) values working software over
+          comprehensive documentation, and responding to change over following a
+          fixed plan. In practice that means a team delivers a small, usable
+          increment every few weeks, reviews it, and adjusts what comes next.
+        </p>
+        <p>
+          Three ideas fitted this assessment well:
+        </p>
+        <ul>
+          <li>
+            <strong>Timeboxed increments.</strong> Assessment 3.1 has a fixed
+            deadline, so the work was cut into a three-week sprint. Each week
+            ended with something that could be opened in a browser, even when the
+            task manager was only half built.
+          </li>
+          <li>
+            <strong>A prioritised backlog instead of a full design up front.</strong>
+            The requirement list was written once, then re-ordered every few days
+            by asking one question: what would break the demonstration if it
+            stayed missing? Login and validation moved to the top of the list
+            after the first week for that reason.
+          </li>
+          <li>
+            <strong>Review and adapt.</strong> At the end of each week I opened
+            every page, wrote down what was awkward, and changed the next week's
+            plan. Two changes came directly out of those reviews: the task list
+            was sorted by due date rather than by the order tasks were added, and
+            status labels were calculated from the real date rather than typed in.
+          </li>
+        </ul>
+        <p>
+          Agile also brought one trade-off that mattered here. Working in
+          increments means features are visible early and errors are found early,
+          but it also means the code is revisited several times. I accepted that
+          cost because a single student working alone cannot test everything at
+          once, and because the rubric rewards a complete, working page over a
+          polished plan.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== Three-week sprint table ===== -->
+    <section class="section" aria-labelledby="sprintTitle">
+      <div class="section__head">
+        <h2 id="sprintTitle">The three-week sprint</h2>
+        <p class="section__intro">
+          One three-week sprint, 26 October to 15 November 2026, broken into the
+          five phases the assessment asks for. Each cell records what happened and
+          what existed at the end of that week.
+        </p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="sprint-table">
+          <colgroup>
+            <col class="c-phase">
+            <col class="c-w1">
+            <col class="c-w2">
+            <col class="c-w3">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Phase</th>
+              <th scope="col">Week 1 &middot; 26 Oct - 1 Nov</th>
+              <th scope="col">Week 2 &middot; 2 - 8 Nov</th>
+              <th scope="col">Week 3 &middot; 9 - 15 Nov</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Planning</th>
+              <td>Read the assessment specification, listed every required component, estimated hours per page and set the sprint goal: a working task list before the blog page.</td>
+              <td>Re-ordered the backlog after the first review. Login and validation were moved ahead of the styling work.</td>
+              <td>Planned the submission itself: what goes into the ZIP, what the README must contain, when to stop adding features.</td>
+            </tr>
+            <tr>
+              <th scope="row">Analysis</th>
+              <td>Wrote down what a student actually needs from a task list: title, course, due date, description, notes. Identified the four operations (create, update, delete, view) and the two validation cases that matter: empty fields and dates.</td>
+              <td>Compared storing tasks in an array in memory versus localStorage, and chose localStorage so the list survives a reload without a server.</td>
+              <td>Analysed the rubric line by line and mapped each criterion to a page or a piece of code that demonstrates it.</td>
+            </tr>
+            <tr>
+              <th scope="row">Design</th>
+              <td>Chose the colour system (deep pine green, amber as the only accent, paper background) and the type scale; sketched the home page and the two-column task layout.</td>
+              <td>Designed the form and table layout, the status badges, and the login gate; decided the page order that the navigation would follow.</td>
+              <td>Designed the blog and ethics pages as reading pages, not more application screens, and added the empty states and error messages.</td>
+            </tr>
+            <tr>
+              <th scope="row">Implementation</th>
+              <td>Built <code>styles.css</code>, the shared header and footer, and the home page with the three-image carousel.</td>
+              <td>Built <code>tasks.html</code>, <code>auth.js</code> and <code>tasks.js</code>: create, edit, delete with confirmation, filters, live clock.</td>
+              <td>Built the blog and ethics pages, wrote the README, and finished the code comments.</td>
+            </tr>
+            <tr>
+              <th scope="row">Testing and Maintenance</th>
+              <td>Checked the navigation on every page and the carousel button; fixed two broken image paths that only appeared when the page was opened from a subfolder.</td>
+              <td>Tested the form against empty fields, a past date, a malformed course code and a 250-character note; logged error 1 on this page.</td>
+              <td>Re-tested every task operation after each change, checked the layout at 375px and 1280px, and confirmed that a deleted task stays deleted after a reload.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== Error log ===== -->
+    <section class="section" aria-labelledby="errorsTitle">
+      <div class="section__head">
+        <h2 id="errorsTitle">Two errors, documented</h2>
+        <p class="section__intro">
+          Both errors below were real failures during development. Each entry
+          records when the problem appeared, the code that caused it, the
+          screenshot of the broken behaviour, when it was resolved, the corrected
+          code, a screenshot of the working page, and why it happened.
+        </p>
+      </div>
+
+      <!-- Error 1 -->
+      <article class="error-entry" aria-labelledby="error1Title">
+        <h3 id="error1Title">Error 1 &middot; A task due today was rejected as "in the past"</h3>
+        <div class="meta-inline">
+          <span>Encountered: <strong>2 November 2026, 21:40</strong></span>
+          <span>Resolved: <strong>3 November 2026, 00:15</strong></span>
+          <span>Component: <strong>date validation</strong></span>
+        </div>
+
+        <p class="prose">
+          Choosing today's date and pressing save produced the message
+          "The due date cannot be in the past", so a task that was due that day
+          could never be added.
+        </p>
+
+        <figure class="shot">
+          <img src="images/blog/bug1-error.png" alt="The task form with today's date filled in, and the red message 'The due date cannot be in the past'" width="1280" height="900">
+          <figcaption>2 November 2026, 21:40 - the form refuses a date that is not in the past.</figcaption>
+        </figure>
+
+        <p class="prose"><strong>Code that caused it</strong> (the first version of <code>readForm</code> in <code>js/tasks.js</code>):</p>
+        <pre class="code"><code>// Buggy version: the date input value ("2026-11-02") is parsed as
+// UTC midnight, then compared against the current local time.
+var chosen = new Date(data.dueDate);      // 2026-11-02T00:00:00Z
+var now = new Date();                     // 2026-11-02T21:40 local (= 13:40Z)
+if (chosen &lt; now) {
+  fail('dueDate', 'The due date cannot be in the past.');
+}</code></pre>
+
+        <figure class="shot">
+          <img src="images/blog/bug1-fixed.png" alt="The same form with today's date, now accepted, and the confirmation message 'Added ...'" width="1280" height="900">
+          <figcaption>3 November 2026, 00:15 - the same date is now accepted and the task appears in the list.</figcaption>
+        </figure>
+
+        <p class="prose"><strong>Corrected code</strong>:</p>
+        <pre class="code"><code>// Fixed version: parse the ISO string into a local-midnight Date, then
+// compare whole days instead of timestamps, so "today" always means today.
+function parseISODate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  var parts = value.split('-').map(Number);
+  var date = new Date(parts[0], parts[1] - 1, parts[2]);   // local midnight
+  if (date.getFullYear() !== parts[0] ||
+      date.getMonth() !== parts[1] - 1 ||
+      date.getDate() !== parts[2]) return null;            // rejects 31 Feb
+  return date;
+}
+
+var days = daysFromToday(data.dueDate);   // negative = past, 0 = today
+if (days &lt; 0) {
+  fail('dueDate', 'The due date cannot be in the past. Choose today or a later date.');
+}</code></pre>
+
+        <p class="prose">
+          <strong>Cause.</strong> A date-only value written as
+          <code>"2026-11-02"</code> is treated by the ECMAScript date parser as
+          UTC midnight, while <code>new Date()</code> returns the current moment
+          in local time. In a UTC+8 time zone, UTC midnight on 2 November is
+          08:00 local, which is earlier than 21:40 the same evening, so today's
+          date was classified as past. The comparison was also comparing two
+          things that mean different things: a calendar day and a point in time.
+        </p>
+        <p class="prose">
+          <strong>How it was resolved.</strong> The date is now parsed into a
+          <code>Date</code> built from local year, month and day, the current day
+          is reduced to local midnight in the same way, and the two are compared
+          as a whole number of days. Parsing this way also rejects impossible
+          dates such as 31 February, which the old check silently rolled forward
+          to March. The round-trip test was added after testing the fix against
+          <code>2026-02-31</code>.
+        </p>
+        <p class="prose">
+          <strong>Resources used.</strong> MDN Web Docs on
+          <code>Date</code> and date-only string parsing (the UTC interpretation
+          of <code>"YYYY-MM-DD"</code>); MDN on
+          <code>Date.prototype.getTime()</code> for comparing dates numerically;
+          the Week 6 practical notes on validating dates in JavaScript.
+        </p>
+      </article>
+
+      <!-- Error 2 -->
+      <article class="error-entry" aria-labelledby="error2Title">
+        <h3 id="error2Title">Error 2 &middot; Every edit duplicated the whole task table</h3>
+        <div class="meta-inline">
+          <span>Encountered: <strong>5 November 2026, 22:10</strong></span>
+          <span>Resolved: <strong>6 November 2026, 09:30</strong></span>
+          <span>Component: <strong>table rendering</strong></span>
+        </div>
+
+        <p class="prose">
+          After editing a task and saving, the table showed the full list again
+          underneath the old one. Switching the filter back and forth added
+          another copy each time, so three tasks became twelve rows and the
+          delete buttons started pointing at the wrong row.
+        </p>
+
+        <figure class="shot">
+          <img src="images/blog/bug2-error.png" alt="The task table showing the same three tasks repeated three times" width="1280" height="900">
+          <figcaption>5 November 2026, 22:10 - the same three tasks rendered three times after two redraws.</figcaption>
+        </figure>
+
+        <p class="prose"><strong>Code that caused it</strong>:</p>
+        <pre class="code"><code>// Buggy version: render() added the new rows to the existing ones and
+// never removed the old rows, so every redraw stacked another copy.
+function render() {
+  var list = tasks.slice().sort(compareByDue).filter(matchesFilter);
+  list.forEach(function (task) {
+    tableBody.appendChild(buildRow(task));   // no clearing step
+  });
+}</code></pre>
+
+        <figure class="shot">
+          <img src="images/blog/bug2-fixed.png" alt="The task table with exactly three rows, one per task" width="1280" height="900">
+          <figcaption>6 November 2026, 09:30 - after the fix, three tasks mean three rows, however often the table is redrawn.</figcaption>
+        </figure>
+
+        <p class="prose"><strong>Corrected code</strong>:</p>
+        <pre class="code"><code>// Fixed version: empty the table body first, then draw exactly one row
+// per task, so the DOM always matches the current state.
+function render() {
+  var list = tasks.slice().sort(compareByDue).filter(matchesFilter);
+
+  tableBody.replaceChildren();               // one call clears every old row
+
+  list.forEach(function (task) {
+    tableBody.appendChild(buildRow(task));
+  });
+
+  emptyState.hidden = list.length &gt; 0;
+  taskCount.textContent = list.length + (list.length === 1 ? ' task' : ' tasks');
+}</code></pre>
+
+        <p class="prose">
+          <strong>Cause.</strong> The first version of <code>render()</code> was
+          written as an "add rows" function because that is what the first draw
+          needed. Once the same function was reused for filter changes and
+          post-edit redraws, it kept appending: the function was not idempotent,
+          and nothing in the DOM told it that a previous render had already
+          happened. The duplicate rows also shared task ids, which is why the
+          delete buttons deleted the wrong entry.
+        </p>
+        <p class="prose">
+          <strong>How it was resolved.</strong> <code>render()</code> now starts
+          from an empty table body and rebuilds every row from the current
+          <code>tasks</code> array, so any number of redraws produces the same
+          output. The count chip and the empty state are updated in the same
+          function, so they can no longer disagree with the rows on screen. The
+          fix was tested by changing the filter five times in a row and confirming
+          that the row count stayed equal to the task count.
+        </p>
+        <p class="prose">
+          <strong>Resources used.</strong> MDN on
+          <code>Element.replaceChildren()</code>; MDN on event delegation for the
+          edit and delete buttons; the Week 6 studio notes on rendering lists from
+          an array.
+        </p>
+      </article>
+    </section>
+
+    <section class="section" aria-labelledby="reflectTitle">
+      <div class="section__head">
+        <h2 id="reflectTitle">What I would change next time</h2>
+      </div>
+      <div class="prose">
+        <p>
+          The largest cost in this sprint was not writing the features, it was
+          finding out what "done" meant. Both errors above came from the same
+          habit: writing a function for the one case in front of me, then reusing
+          it somewhere else without re-reading it. A short written test list per
+          function, such as "run it twice and compare", would have caught the
+          duplicate rows in minutes instead of two days.
+        </p>
+        <p>
+          I would also keep the commit history closer to the sprint plan. The plan
+          above is honest about the order the work happened in, but the history is
+          thinner than the plan, and a marker would have to read the plan rather
+          than the log to see the progression.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="refsTitle">
+      <div class="section__head">
+        <h2 id="refsTitle">References</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li>Flewelling, P. (2018). <em>The agile developer's handbook: get more value from your software development</em>. Packt Publishing. Chapter 1: The software industry and the Agile Manifesto.</li>
+          <li>MDN Web Docs. <em>Date</em>. Mozilla. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date</li>
+          <li>MDN Web Docs. <em>Element.replaceChildren()</em>. Mozilla. https://developer.mozilla.org/en-US/docs/Web/API/Element/replaceChildren</li>
+          <li>MDN Web Docs. <em>EventTarget.addEventListener()</em> and event delegation. Mozilla. https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener</li>
+          <li>INFO 1012 course material: Week 6 Studio (JavaScript and the DOM), Week 8 Tutorial (Ethics and privacy).</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__grid">
+    <div>
+      <p><strong>StudyDeck</strong> &middot; a study task manager built for INFO 1012, Assessment 3.1.</p>
+      <p class="muted">HTML, CSS and JavaScript written by Yuhao Wang, 2026.</p>
+    </div>
+    <div>
+      <div class="foot-links">
+        <a href="index.html">Home</a>
+        <a href="tasks.html">Task manager</a>
+        <a href="blog.html">Project blog</a>
+        <a href="ethics.html">Ethics &amp; privacy</a>
+      </div>
+      <p class="muted" style="margin-top:.6rem">Released under the MIT licence.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

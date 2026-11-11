@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyDeck | Ethics and privacy reflection</title>
+  <meta name="description" content="How StudyDeck applies ethical data use and privacy-conscious design: local-only storage, data minimisation, a login gate, honest validation and visible user control.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="2" y="2" width="28" height="28" rx="7" fill="#1c5c4b"></rect>
+        <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="#e7a63c" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span>StudyDeck</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="tasks.html">Task manager</a>
+      <a href="blog.html">Project blog</a>
+      <a href="ethics.html" aria-current="page">Ethics &amp; privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <section class="page-head">
+      <h1>Ethics and privacy reflection</h1>
+      <p>
+        A study planner collects information about a person's workload, deadlines
+        and habits, which is more personal than it first looks. This page sets out
+        the design decisions that limit what StudyDeck collects, keeps that data on
+        the device it was typed on, and gives the user control over it.
+      </p>
+    </section>
+
+    <section class="section" aria-labelledby="collectTitle">
+      <div class="section__head">
+        <h2 id="collectTitle">What the application collects, and what it refuses to collect</h2>
+      </div>
+      <div class="prose">
+        <p>
+          The ethical starting point is data minimisation: collect only what the
+          task list cannot work without. A task stores a title, a course code, a
+          course name, a due date, a description and optional notes. That is all.
+          The application does not ask for an email address, a phone number, a
+          student number, a photo or a location, even though the home page could
+          have displayed them.
+        </p>
+        <p>
+          Two further limits are built into the code rather than written into a
+          policy:
+        </p>
+        <ul>
+          <li>
+            <strong>No account, no server.</strong> There is no sign-up form, no
+            database and no API call anywhere in the project. Tasks are written to
+            <code>localStorage</code> on the device that typed them, so the data is
+            never transmitted and there is nothing to leak from a remote store.
+          </li>
+          <li>
+            <strong>No third-party requests.</strong> Fonts, styles, scripts and
+            images are all bundled with the project. The pages load no analytics
+            service, no advertising network, no embedded tracker and no external
+            CDN, so opening the site tells nobody else that it was opened.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="privacyTitle">
+      <div class="section__head">
+        <h2 id="privacyTitle">Features that protect privacy</h2>
+      </div>
+      <div class="tile-grid">
+        <article class="pillar">
+          <h3>A login gate</h3>
+          <p>
+            The task list sits behind a username and password, so opening the
+            laptop in a lecture theatre does not expose someone's deadlines to the
+            person in the next seat.
+          </p>
+        </article>
+        <article class="pillar">
+          <h3>Session-only sign-in</h3>
+          <p>
+            The session flag lives in <code>sessionStorage</code>, which is emptied
+            when the browser tab closes. A shared computer therefore does not keep
+            the list open for the next person.
+          </p>
+        </article>
+        <article class="pillar">
+          <h3>No hidden persistence</h3>
+          <p>
+            Nothing is stored beyond the task list itself: no preferences, no
+            history, no identifier. Clearing the browser's storage for this site
+            removes every trace of the work.
+          </p>
+        </article>
+        <article class="pillar">
+          <h3>Visible control</h3>
+          <p>
+            Every task can be edited and deleted, deletion asks for confirmation
+            first, and the sign-out button is always on screen while the list is
+            open.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="examplesTitle">
+      <div class="section__head">
+        <h2 id="examplesTitle">How this shows up in the code</h2>
+      </div>
+      <div class="prose">
+        <h3>Example 1 &middot; Input validation as a duty of care</h3>
+        <p>
+          Bad input is rejected before it is stored, and the message explains what
+          to do instead of blaming the user. A past due date, an empty title or a
+          course code that is not in the form <code>INFO1012</code> never reaches
+          <code>localStorage</code>. This protects the user's own data quality: a
+          list full of impossible dates is worse than no list, because the student
+          starts trusting a tool that is wrong.
+        </p>
+        <pre class="code"><code>var days = daysFromToday(data.dueDate);
+if (days &lt; 0) {
+  fail('dueDate', 'The due date cannot be in the past. Choose today or a later date.');
+}</code></pre>
+
+        <h3>Example 2 &middot; A login gate that is honest about its limits</h3>
+        <p>
+          The credentials are checked in <code>js/auth.js</code>, and the code
+          comments state plainly that a static site cannot keep a secret: anyone
+          who opens the file can read the password. The gate is presented as a
+          barrier against a casual onlooker, not as security against an attacker.
+          Claiming more would be the unethical choice, because it would invite
+          someone to store genuinely sensitive information behind a lock that does
+          not exist.
+        </p>
+
+        <h3>Example 3 &middot; Data the application deliberately does not keep</h3>
+        <p>
+          Task notes are capped at 200 characters and no field asks for personal
+          details. The point is not to make the app less useful; it is to make the
+          stored record small enough to be obviously harmless if the device is
+          lost or borrowed.
+        </p>
+
+        <h3>Example 4 &middot; Accessible by default</h3>
+        <p>
+          Every form control has a visible label, error messages are announced
+          through <code>role="alert"</code>, the current time updates in a live
+          region, focus is visible on every control, and the layout works at
+          375px wide. An application that only works for users with a mouse and
+          perfect eyesight excludes people for no reason, which is an ethical
+          failure before it is a technical one.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="appsTitle">
+      <div class="section__head">
+        <h2 id="appsTitle">Where this sits against privacy principles</h2>
+      </div>
+      <div class="prose">
+        <p>
+          The Australian Privacy Principles (APPs) in the <em>Privacy Act 1988</em>
+          are the reference point taught in the Week 8 tutorial. Three of them map
+          directly onto this project:
+        </p>
+        <ul>
+          <li>
+            <strong>APP 1 - open and transparent management.</strong> The
+            application tells the user, on the task page itself, that tasks are
+            stored on this device only, rather than burying that in a policy
+            nobody reads.
+          </li>
+          <li>
+            <strong>APP 3 - collection of solicited personal information.</strong>
+            Only information necessary for the stated purpose is requested: there
+            is no field that exists for future marketing or analytics.
+          </li>
+          <li>
+            <strong>APP 11 - security of personal information.</strong> The
+            effective measure here is not encryption but elimination: data that is
+            never transmitted cannot be intercepted, and a session-scoped sign-in
+            limits who can see it on a shared machine.
+          </li>
+        </ul>
+        <div class="quote">
+          The strongest privacy control in StudyDeck is that most data a planner
+          could collect simply never leaves the browser: no account, no upload,
+          no third party.
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="limitsTitle">
+      <div class="section__head">
+        <h2 id="limitsTitle">Known limitations, stated plainly</h2>
+      </div>
+      <div class="prose">
+        <p>
+          The design is not a claim of security. Three limits are worth recording:
+        </p>
+        <ul>
+          <li>
+            The login check runs in the browser, so it can be bypassed by anyone
+            who reads the source or edits the page. A real deployment would move
+            authentication to a server and never ship the password to the client.
+          </li>
+          <li>
+            Tasks are stored unencrypted in <code>localStorage</code>. Anyone with
+            access to the browser profile on that device can read them, which is
+            why the application asks for no personal details in the notes field.
+          </li>
+          <li>
+            There is no export or backup, so clearing the browser's data destroys
+            the list. A future version would add a JSON export so the user, not
+            the application, holds the copy.
+          </li>
+        </ul>
+        <p>
+          Each of these is a place where the honest design is to state the limit
+          and keep the collected data small, rather than to imply protection that
+          the implementation cannot provide.
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="refsTitle">
+      <div class="section__head">
+        <h2 id="refsTitle">References</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li>Office of the Australian Information Commissioner. <em>Australian Privacy Principles</em>. https://www.oaic.gov.au/privacy/australian-privacy-principles</li>
+          <li><em>Privacy Act 1988</em> (Cth), Schedule 1.</li>
+          <li>INFO 1012, Week 8 Tutorial: Ethics and privacy.</li>
+          <li>MDN Web Docs. <em>Window.localStorage</em> and <em>Window.sessionStorage</em>. Mozilla. https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage</li>
+        </ul>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__grid">
+    <div>
+      <p><strong>StudyDeck</strong> &middot; a study task manager built for INFO 1012, Assessment 3.1.</p>
+      <p class="muted">HTML, CSS and JavaScript written by Yuhao Wang, 2026.</p>
+    </div>
+    <div>
+      <div class="foot-links">
+        <a href="index.html">Home</a>
+        <a href="tasks.html">Task manager</a>
+        <a href="blog.html">Project blog</a>
+        <a href="ethics.html">Ethics &amp; privacy</a>
+      </div>
+      <p class="muted" style="margin-top:.6rem">Released under the MIT licence.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
