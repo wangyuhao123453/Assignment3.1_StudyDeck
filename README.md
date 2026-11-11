@@ -4,6 +4,8 @@ A small, single-purpose web application that keeps every assignment, revision
 block, quiz and deadline for a semester in one place, sorted by the date it is
 actually due.
 
+**Repository:** <https://github.com/wangyuhao123453/Assignment3.1_StudyDeck>
+
 Built as **INFO 1012 Assessment 3.1 (Web Page Development Portfolio)** by
 **Yuhao Wang** (student ID 2518040121), using HTML, CSS, JavaScript and Markdown
 in Visual Studio Code.
