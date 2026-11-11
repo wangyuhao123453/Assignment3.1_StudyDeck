@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyDeck | Task manager</title>
+  <meta name="description" content="Create, update, delete and review study tasks, behind a basic login gate.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="2" y="2" width="28" height="28" rx="7" fill="#1c5c4b"></rect>
+        <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="#e7a63c" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span>StudyDeck</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="tasks.html" aria-current="page">Task manager</a>
+      <a href="blog.html">Project blog</a>
+      <a href="ethics.html">Ethics &amp; privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+    <section class="page-head">
+      <h1>Task manager</h1>
+      <p>
+        Everything that is due this semester, in one table. Add a task, change a
+        date when a deadline moves, remove what is finished. The page is behind a
+        login gate, and the current date and time are shown at the bottom so the
+        status column always has a reference point.
+      </p>
+    </section>
+
+    <!-- ===== Login gate (specification 2.2.2) =====
+         A static site cannot check a password on a server, so this gate keeps the
+         task list out of sight until the right details are entered. It is a
+         usability barrier, not real security - see the ethics page. -->
+    <section class="auth" id="authGate" aria-labelledby="authTitle">
+      <h2 id="authTitle">Sign in to open your tasks</h2>
+      <p class="auth__hint">
+        Use the account set up for this device: username <strong>yuhao</strong>,
+        password <strong>study2026</strong>. The sign-in lasts until this browser
+        tab is closed.
+      </p>
+      <form id="loginForm" novalidate>
+        <div class="field">
+          <label for="loginUser">Username</label>
+          <input type="text" id="loginUser" name="username" autocomplete="username" required>
+          <p class="field__error" id="loginUserError" role="alert"></p>
+        </div>
+        <div class="field">
+          <label for="loginPass">Password</label>
+          <input type="password" id="loginPass" name="password" autocomplete="current-password" required>
+          <p class="field__error" id="loginPassError" role="alert"></p>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn--primary" type="submit">Sign in</button>
+        </div>
+        <p class="form-status" id="loginStatus" role="alert"></p>
+      </form>
+    </section>
+
+    <!-- ===== Task workspace, shown after a successful sign-in ===== -->
+    <section id="workspace" hidden aria-labelledby="workspaceTitle">
+      <div class="tasks">
+
+        <!-- Create / update form -->
+        <div class="panel">
+          <h2 id="workspaceTitle">New study task</h2>
+          <form id="taskForm" novalidate>
+            <input type="hidden" id="editingId" value="">
+
+            <div class="field">
+              <label for="taskTitle">Task title <span class="req">required</span></label>
+              <input type="text" id="taskTitle" name="title" maxlength="80" placeholder="Complete Assignment 3">
+              <p class="field__error" id="taskTitleError" role="alert"></p>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label for="courseCode">Course code <span class="req">required</span></label>
+                <input type="text" id="courseCode" name="courseCode" maxlength="8" placeholder="INFO1012">
+                <p class="field__error" id="courseCodeError" role="alert"></p>
+              </div>
+              <div class="field">
+                <label for="dueDate">Due date <span class="req">required</span></label>
+                <input type="date" id="dueDate" name="dueDate">
+                <p class="field__error" id="dueDateError" role="alert"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="courseName">Course name <span class="req">required</span></label>
+              <input type="text" id="courseName" name="courseName" maxlength="60" placeholder="Information Technology Systems">
+              <p class="field__error" id="courseNameError" role="alert"></p>
+            </div>
+
+            <div class="field">
+              <label for="taskDescription">Description <span class="req">required</span></label>
+              <textarea id="taskDescription" name="description" maxlength="300" placeholder="What has to be done?"></textarea>
+              <p class="field__error" id="taskDescriptionError" role="alert"></p>
+            </div>
+
+            <div class="field">
+              <label for="taskNotes">Notes <span class="req">optional</span></label>
+              <textarea id="taskNotes" name="notes" maxlength="200" placeholder="Room, group members, links to resources"></textarea>
+              <p class="field__error" id="taskNotesError" role="alert"></p>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn--primary" type="submit" id="saveTaskBtn">Save task</button>
+              <button class="btn btn--ghost" type="button" id="cancelEditBtn" hidden>Cancel edit</button>
+              <button class="btn btn--ghost btn--small" type="button" id="signOutBtn" style="margin-left:auto">Sign out</button>
+            </div>
+            <p class="form-status" id="formStatus" role="alert"></p>
+          </form>
+        </div>
+
+        <!-- Task list -->
+        <div class="panel">
+          <h2>Your tasks</h2>
+          <div class="toolbar">
+            <label class="muted" for="filterSelect" style="font-size:.9rem">Show</label>
+            <select id="filterSelect">
+              <option value="all">All tasks</option>
+              <option value="open">Not yet due</option>
+              <option value="soon">Due within 3 days</option>
+              <option value="overdue">Overdue</option>
+            </select>
+            <span class="count-chip" id="taskCount">0 tasks</span>
+          </div>
+
+          <div class="table-wrap">
+            <table class="task-table">
+              <colgroup>
+                <col class="c-title">
+                <col class="c-course">
+                <col class="c-due">
+                <col class="c-status">
+                <col class="c-actions">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col">Task</th>
+                  <th scope="col">Course</th>
+                  <th scope="col">Due</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="taskTableBody"></tbody>
+            </table>
+          </div>
+
+          <p class="empty-state" id="emptyState" hidden>
+            No tasks match this filter yet. Add one on the left, or switch the filter back to all tasks.
+          </p>
+
+          <!-- Current date and time, required by specification 2.2.2. -->
+          <div class="clock-bar">
+            <span>Current date and time: <strong id="nowText">loading&hellip;</strong></span>
+            <span>Tasks are stored on this device only.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__grid">
+    <div>
+      <p><strong>StudyDeck</strong> &middot; a study task manager built for INFO 1012, Assessment 3.1.</p>
+      <p class="muted">HTML, CSS and JavaScript written by Yuhao Wang, 2026.</p>
+    </div>
+    <div>
+      <div class="foot-links">
+        <a href="index.html">Home</a>
+        <a href="tasks.html">Task manager</a>
+        <a href="blog.html">Project blog</a>
+        <a href="ethics.html">Ethics &amp; privacy</a>
+      </div>
+      <p class="muted" style="margin-top:.6rem">Released under the MIT licence.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/auth.js"></script>
+<script src="js/tasks.js"></script>
+</body>
+</html>

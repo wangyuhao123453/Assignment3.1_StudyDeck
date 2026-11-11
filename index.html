@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudyDeck | Home - My Study Task Manager</title>
+  <meta name="description" content="StudyDeck is a study task manager that keeps every assignment, revision block and deadline for the semester in one place.">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Shared header. The same block is repeated on all four pages so that every
+     page is reachable from every other page (specification 2.2). -->
+<header class="site-head">
+  <div class="wrap site-head__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="2" y="2" width="28" height="28" rx="7" fill="#1c5c4b"></rect>
+        <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="#e7a63c" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+      <span>StudyDeck</span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="tasks.html">Task manager</a>
+      <a href="blog.html">Project blog</a>
+      <a href="ethics.html">Ethics &amp; privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <!-- ===== Hero: application name, purpose, and the required image carousel ===== -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <div>
+        <h1 class="hero__title" id="heroTitle">
+          StudyDeck
+          <span>My study task manager</span>
+        </h1>
+        <p class="hero__lede">
+          Every assignment, revision block and quiz for the semester in one list,
+          sorted by the date it is actually due. No more guessing which deadline
+          comes first.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="tasks.html">Open the task manager</a>
+          <a class="btn btn--ghost" href="blog.html">Read the build log</a>
+        </div>
+      </div>
+
+      <!-- Three study images cycled by one button (specification 2.2.1). -->
+      <div class="carousel" aria-label="Study images">
+        <figure class="carousel__frame">
+          <img id="slideImage" src="images/desk-study.jpg"
+               alt="A desk set up for study: open notebook with a checklist, laptop showing a task list, lamp and coffee"
+               width="1600" height="900">
+        </figure>
+        <div class="carousel__bar">
+          <button class="btn btn--ghost btn--small" id="changeImageBtn" type="button">Change image</button>
+          <p class="carousel__caption" id="slideCaption" aria-live="polite">1 of 3 &middot; A desk ready for a study session</p>
+          <div class="carousel__dots" role="group" aria-label="Choose a study image">
+            <button type="button" data-slide="0" aria-pressed="true" aria-label="Show image 1"></button>
+            <button type="button" data-slide="1" aria-pressed="false" aria-label="Show image 2"></button>
+            <button type="button" data-slide="2" aria-pressed="false" aria-label="Show image 3"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== About the App ===== -->
+    <section class="section" id="about-app" aria-labelledby="aboutAppTitle">
+      <div class="section__head">
+        <h2 id="aboutAppTitle">About the app</h2>
+        <p class="section__intro">
+          StudyDeck exists because my own semester is spread over four courses,
+          two campuses and a shared calendar that nobody updates. It replaces the
+          notebook page and the loose spreadsheet with one page that always knows
+          what is due next.
+        </p>
+      </div>
+
+      <p class="prose">
+        The purpose of the application is simple: give a student one place to
+        record every academic task, then show those tasks in the order they need
+        attention. Each task stores a title, the course code and course name, a
+        due date, a short description and any extra notes, so a task such as
+        &ldquo;finish the Week 6 JavaScript exercises&rdquo; keeps its context
+        months later.
+      </p>
+      <p class="prose">
+        The app helps mainly with two problems. First, tasks are no longer
+        scattered: everything is stored in one list that survives closing the
+        browser, so nothing depends on remembering to re-open a notes file.
+        Second, the list is honest about time: every task is tagged as upcoming,
+        due within three days, or overdue, calculated from the real current date
+        rather than from a label I typed in.
+      </p>
+
+      <div class="tile-grid" role="list">
+        <article class="tile" role="listitem">
+          <h3>Create and edit</h3>
+          <p>Add a task in seconds, then re-open it to change the due date or the notes when a deadline moves.</p>
+        </article>
+        <article class="tile" role="listitem">
+          <h3>Delete with a check</h3>
+          <p>Deleting asks for confirmation first, so a mis-tap never removes a task that is still needed.</p>
+        </article>
+        <article class="tile" role="listitem">
+          <h3>Validation built in</h3>
+          <p>Empty titles, past dates and malformed course codes are rejected with a plain explanation.</p>
+        </article>
+        <article class="tile" role="listitem">
+          <h3>Private by default</h3>
+          <p>Tasks are stored on this device only. There is no account, no upload and no third-party tracker.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== About Me ===== -->
+    <section class="section" id="about-me" aria-labelledby="aboutMeTitle">
+      <div class="section__head">
+        <h2 id="aboutMeTitle">About me</h2>
+      </div>
+      <div class="about-me">
+        <img class="about-me__photo" src="images/profile.jpg" alt="Portrait of Yuhao Wang" width="440" height="550">
+        <div class="prose">
+          <p>
+            I am Yuhao Wang, a second-year student in the dual degree programme
+            between Xi'an University of Architecture and Technology and Adelaide
+            University, studying in the Computer Science class of 2501. This
+            semester I am taking Information Technology Systems (INFO 1012),
+            data structures, object-oriented programming and a mathematics unit,
+            so four deadlines can land in the same week.
+          </p>
+          <p>
+            My academic interests are web development and the way systems are put
+            together: how a page is structured, how state is kept, and why a small
+            validation rule saves a lot of debugging later. Outside class I play
+            football and badminton, and I listen to music while reviewing notes.
+          </p>
+          <p>
+            How I manage study tasks: I plan in three-week blocks, put every
+            deliverable into StudyDeck with its real due date, and work through
+            the list from the top. Each block ends with a short review of what
+            slipped, which is the habit the project plan on the blog page is
+            built around.
+          </p>
+          <ul class="fact-list">
+            <li><span>Studying</span><span>BSc Information Technology, second year (dual degree programme)</span></li>
+            <li><span>Class</span><span>Computer Science 2501, student ID 2518040121</span></li>
+            <li><span>Interests</span><span>Web development, computer systems, data structures</span></li>
+            <li><span>Off screen</span><span>Football, badminton, travel, music</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap site-foot__grid">
+    <div>
+      <p><strong>StudyDeck</strong> &middot; a study task manager built for INFO 1012, Assessment 3.1.</p>
+      <p class="muted">HTML, CSS and JavaScript written by Yuhao Wang, 2026. Images generated for this project.</p>
+    </div>
+    <div>
+      <div class="foot-links">
+        <a href="index.html">Home</a>
+        <a href="tasks.html">Task manager</a>
+        <a href="blog.html">Project blog</a>
+        <a href="ethics.html">Ethics &amp; privacy</a>
+      </div>
+      <p class="muted" style="margin-top:.6rem">Released under the MIT licence.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/home.js"></script>
+</body>
+</html>
