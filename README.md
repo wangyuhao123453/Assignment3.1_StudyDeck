@@ -5,6 +5,7 @@ block, quiz and deadline for a semester in one place, sorted by the date it is
 actually due.
 
 **Repository:** <https://github.com/wangyuhao123453/Assignment3.1_StudyDeck>
+**Live site:** <https://wangyuhao123453.github.io/Assignment3.1_StudyDeck/>
 
 Built as **INFO 1012 Assessment 3.1 (Web Page Development Portfolio)** by
 **Yuhao Wang** (student ID 2518040121), using HTML, CSS, JavaScript and Markdown
